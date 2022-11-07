@@ -1,5 +1,7 @@
 import "./App.css";
 import { useQuery } from "@tanstack/react-query";
+import { Col, Image, Row, Typography } from "antd";
+import { GlobalOutlined, MailOutlined, PhoneOutlined } from "@ant-design/icons";
 
 interface User {
   id: number;
@@ -9,6 +11,8 @@ interface User {
   phone: string;
   website: string;
 }
+
+const { Text } = Typography;
 
 function App() {
   const { data, isLoading } = useQuery(
@@ -25,30 +29,42 @@ function App() {
   const users = data;
   return (
     <>
-      {isLoading === true && <div>Loading user data...</div>}
-      <div className="div">
-        {users?.map((user) => {
-          return (
-            <div key={user.id}>
-              <div>
-                <div>
-                  <img
-                    src={`https://avatars.dicebear.com/v2/avataaars/${user.username}.svg?options[mood][]=happy`}
-                  />
-                </div>
-                <div>
+      <Row>
+        <Col>
+          <div>
+            {users?.map((user) => {
+              return (
+                <div key={user.id}>
                   <div>
-                    <h2>{user.name}</h2>
-                    <p>{user.email}</p>
-                    <p>{user.phone}</p>
-                    <p>{user.website}</p>
+                    <div>
+                      <Image
+                        width={200}
+                        alt=""
+                        src={`https://avatars.dicebear.com/v2/avataaars/${user.username}.svg?options[mood][]=happy`}
+                      />
+                    </div>
+                    <div>
+                      <div>
+                        <h2>{user.name}</h2>
+                        <Text type="secondary">
+                          <MailOutlined /> {user.email}
+                        </Text>
+                        <p>
+                          <PhoneOutlined /> {user.phone}
+                        </p>
+                        <p>
+                          <GlobalOutlined /> {user.website}
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+              );
+            })}
+          </div>
+        </Col>
+      </Row>
+      {isLoading === true && <div>Loading user data...</div>}
     </>
   );
 }
